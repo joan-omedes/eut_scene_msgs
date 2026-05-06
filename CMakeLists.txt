@@ -8,12 +8,19 @@ find_package(geometry_msgs REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  # ── Scene / entity messages ───────────────────────────────────────────────
   "msg/SceneEntity.msg"
   "msg/SceneEntityArray.msg"
+  # ── Tool localisation messages ────────────────────────────────────────────
   "msg/ToolKeypoint.msg"
   "msg/ToolKeypointArray.msg"
   "msg/ToolPose6D.msg"
   "msg/ToolPose6DArray.msg"
+  # ── TIPS v2 visual embedding messages ─────────────────────────────────────
+  "msg/TipsEmbedding.msg"
+  "msg/TipsEmbeddingArray.msg"
+  "msg/TipsPatchMatch.msg"
+  "msg/TipsPatchMatchArray.msg"
   DEPENDENCIES std_msgs geometry_msgs builtin_interfaces
 )
 
