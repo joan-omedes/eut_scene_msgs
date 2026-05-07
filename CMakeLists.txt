@@ -11,8 +11,10 @@ find_package(sensor_msgs REQUIRED)
 find_package(action_msgs REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  # ── Scene / entity messages ───────────────────────────────────────────────
   "msg/SceneEntity.msg"
   "msg/SceneEntityArray.msg"
+  # ── Tool localisation messages ────────────────────────────────────────────
   "msg/ToolKeypoint.msg"
   "msg/ToolKeypointArray.msg"
   "msg/ToolPose6D.msg"

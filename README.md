@@ -6,3 +6,46 @@ Provides message definitions for:
 - generic segmented entities
 - tool keypoints (tip/handle)
 - tool 6D pose outputs
+- **TIPS v2 dense visual embeddings** (`TipsEmbedding`, `TipsEmbeddingArray`)
+- **TIPS v2 text-guided spatial patch matches** (`TipsPatchMatch`, `TipsPatchMatchArray`)
+
+---
+
+## Message reference
+
+### Scene / entity
+| Message | Description |
+|---|---|
+| `SceneEntity` | A single segmented scene entity (bbox, mask RLE, class, confidence) |
+| `SceneEntityArray` | Array of `SceneEntity` |
+
+### Tool localisation
+| Message | Description |
+|---|---|
+| `ToolKeypoint` | 2D keypoint (tip / handle) for a detected tool |
+| `ToolKeypointArray` | Array of `ToolKeypoint` |
+| `ToolPose6D` | Full 6D pose estimate for a tool |
+| `ToolPose6DArray` | Array of `ToolPose6D` |
+
+### TIPS v2 visual embeddings
+Produced by the `tips_visual_embedder` ROS 2 package.
+
+| Message | Description |
+|---|---|
+| `TipsEmbedding` | Per-entity TIPS v2 output: `cls_token` (global, shape `[D]`) + `spatial_features` (flattened `H×W×D` grid, default `32×32×768` for variant B) + bbox + model metadata |
+| `TipsEmbeddingArray` | Array of `TipsEmbedding`, one per detected entity per frame. Published on `/tips/embeddings` |
+
+**Deserialising `spatial_features` in Python:**
+```python
+import numpy as np
+H = W = emb.image_size // emb.patch_size   # e.g. 32
+spatial = np.array(emb.spatial_features, dtype=np.float32).reshape(H, W, emb.embedding_dim)
+```
+
+### TIPS v2 patch matches
+Produced by the `tips_text_matcher` ROS 2 package.
+
+| Message | Description |
+|---|---|
+| `TipsPatchMatch` | Best spatial patch for a text query: `patch_row/col`, `cosine_similarity`, `query` string, `entity_id`, bbox |
+| `TipsPatchMatchArray` | Array of `TipsPatchMatch`, one per entity per frame. Published on `/tips/patch_matches` |
