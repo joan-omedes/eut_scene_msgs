@@ -4,24 +4,30 @@
 std_msgs/Header header
 
 # Entity identity — maps back to hri_msgs/Entity.id
-string entity_id
+string entity_id # track_id
 
 # ── TIPS model provenance ─────────────────────────────────────────────────────
 # Downstream nodes need this to know how to interpret the embedding tensors.
 string tips_model       # e.g. "TIPS_V2"  (or "TIPS" for v1)
 string variant          # e.g. "B"  → embedding_dim=768;  "L" → 1024
 int32  image_size       # pixels fed into ViT, e.g. 448
-int32  patch_size       # ViT patch size, e.g. 14  → grid = image_size / patch_size
+int32  patch_size       # ViT patch size, e.g. 14  → full grid = image_size / patch_size
 int32  embedding_dim    # feature vector length D  (768 for B, 1024 for L)
+
+# Actual patch-grid dimensions of spatial_features below.
+# For full-frame crops (encode_crop / encode_batch) grid_h == grid_w == image_size/patch_size.
+# For ROI sub-grids (encode_frame_for_entities) grid_h and grid_w are the ROI extents
+# and may differ from each other and from image_size/patch_size.
+# A value of 0 means "same as image_size / patch_size" (backward compat).
+int32  grid_h           # patch-grid height  (rows)
+int32  grid_w           # patch-grid width   (cols)
 
 # ── CLS token — global embedding of the crop, shape [embedding_dim] ───────────
 float32[] cls_token
 
 # ── Spatial feature map — flattened from (H×W×D) row-major ───────────────────
-# H = W = image_size / patch_size  (e.g. 32 for image_size=448, patch_size=14)
-# Reshape: np.array(spatial_features).reshape(image_size//patch_size,
-#                                              image_size//patch_size,
-#                                              embedding_dim)
+# H = grid_h, W = grid_w  (use those fields, not image_size/patch_size)
+# Reshape: np.array(spatial_features).reshape(grid_h, grid_w, embedding_dim)
 float32[] spatial_features
 
 # ── YOLO category label ───────────────────────────────────────────────────────
