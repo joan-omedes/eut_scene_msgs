@@ -1,0 +1,46 @@
+# ── Goal ──────────────────────────────────────────────────────────────────────
+# Text query to search for (e.g. "drill bit", "red cup").
+string query
+
+# How many seconds to run the action.
+# Set to -1.0 to run until manually cancelled or preempted by a new goal.
+float32 timeout_sec
+
+---
+
+# ── Result (sent on completion / preemption / timeout) ────────────────────────
+# Echoed-back query string.
+string query
+
+# False if the action was aborted with no data collected (e.g. immediately preempted).
+bool succeeded
+
+# Actual wall-clock seconds the action ran.
+float32 duration_sec
+
+# Total number of TipsEmbeddingArray frames evaluated.
+int32 n_frames_processed
+
+# All Object_N seen during the action, sorted by peak visual_sim descending.
+eut_scene_msgs/TipsObjectQueryMatch[] ranked_matches
+
+# Best match summary (highest peak visual_sim).
+string  best_match_object_id
+string  best_match_category
+float32 best_match_visual_sim
+float32 best_match_label_sim
+
+# Absolute path to the saved JPEG crop of the best match (empty if none saved).
+string best_match_crop_path
+
+---
+
+# ── Feedback (sent once per processed TipsEmbeddingArray frame) ───────────────
+# 0-based index of the current frame within this action run.
+int32   frame_number
+
+# Elapsed seconds since the goal was accepted.
+float32 elapsed_sec
+
+# Per-object scores for the current frame only.
+eut_scene_msgs/TipsObjectQueryMatch[] current_frame_matches
