@@ -1,10 +1,11 @@
 # Dense TIPS v2 visual embedding for a single detected entity crop.
 # Published by tips_visual_embedder for every entity in a synchronized EntityArray frame.
+# Uses full hri_msgs/Entity from: https://github.com/Eurecat/hri_msgs
 
 std_msgs/Header header
 
-# Entity identity — maps back to hri_msgs/Entity.id
-string entity_id # track_id
+# Full source entity (includes track_id, label, class_id, bbox, contour).
+hri_msgs/Entity entity
 
 # ── TIPS model provenance ─────────────────────────────────────────────────────
 # Downstream nodes need this to know how to interpret the embedding tensors.

@@ -1,8 +1,12 @@
 # Stable physical-object identity assigned by tips_visual_embedder's re-ID database.
 # One message per detected entity per frame.
 # Published as part of TipsObjectIdentityArray on /tips/object_identities.
+# Uses full hri_msgs/Entity from: https://github.com/Eurecat/hri_msgs
 
 std_msgs/Header header
+
+# Full source entity (includes track_id, label, class_id, bbox, contour).
+hri_msgs/Entity entity
 
 # ── Identity fields ────────────────────────────────────────────────────────────
 # Stable "Object_N" ID (empty string "" if min_embeddings_to_assign not yet reached).
@@ -10,9 +14,6 @@ string object_id
 
 # YOLO class label (e.g. "drill", "cup").
 string category
-
-# Volatile track ID from the YOLO tracker (maps to hri_msgs/Entity.track_id).
-string entity_id
 
 # True once the identity has >= min_embeddings_to_assign embeddings.
 bool is_confirmed

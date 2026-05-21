@@ -3,21 +3,21 @@
 ROS2 interface package for scene understanding pipelines.
 
 Provides message definitions for:
-- generic segmented entities
 - tool keypoints (tip/handle)
 - tool 6D pose outputs
 - **TIPS v2 dense visual embeddings** (`TipsEmbedding`, `TipsEmbeddingArray`)
 - **TIPS v2 text-guided spatial patch matches** (`TipsPatchMatch`, `TipsPatchMatchArray`)
+- **TIPS v2 identity/action messages** that embed full `hri_msgs/Entity`
 
 ---
 
 ## Message reference
 
-### Scene / entity
-| Message | Description |
-|---|---|
-| `SceneEntity` | A single segmented scene entity (bbox, mask RLE, class, confidence) |
-| `SceneEntityArray` | Array of `SceneEntity` |
+### Entity source
+All TIPS-related messages in this package use full `hri_msgs/Entity`.
+
+Upstream repository:
+- https://github.com/Eurecat/hri_msgs
 
 ### Tool localisation
 | Message | Description |
@@ -32,7 +32,7 @@ Produced by the `tips_visual_embedder` ROS 2 package.
 
 | Message | Description |
 |---|---|
-| `TipsEmbedding` | Per-entity TIPS v2 output: `cls_token` (global, shape `[D]`) + `spatial_features` (flattened `H×W×D` grid, default `32×32×768` for variant B) + bbox + model metadata |
+| `TipsEmbedding` | Per-entity TIPS v2 output: full `hri_msgs/Entity` + `cls_token` (global, shape `[D]`) + `spatial_features` (flattened `H×W×D` grid, default `32×32×768` for variant B) + model metadata |
 | `TipsEmbeddingArray` | Array of `TipsEmbedding`, one per detected entity per frame. Published on `/tips/embeddings` |
 
 **Deserialising `spatial_features` in Python:**
@@ -47,5 +47,5 @@ Produced by the `tips_text_matcher` ROS 2 package.
 
 | Message | Description |
 |---|---|
-| `TipsPatchMatch` | Best spatial patch for a text query: `patch_row/col`, `cosine_similarity`, `query` string, `entity_id`, bbox |
+| `TipsPatchMatch` | Best spatial patch for a text query: full `hri_msgs/Entity`, `patch_row/col`, `cosine_similarity`, `query` string |
 | `TipsPatchMatchArray` | Array of `TipsPatchMatch`, one per entity per frame. Published on `/tips/patch_matches` |

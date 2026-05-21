@@ -1,12 +1,13 @@
 # Per-object match result used in both TipsObjectQuery feedback and result.
 # Contains visual cosine similarity (query vs spatial patches) and label cosine
 # similarity (query vs TIPS text encoding of the YOLO category label).
+# Uses full hri_msgs/Entity from: https://github.com/Eurecat/hri_msgs
 
 # Stable Object_N from identity DB (empty if identity_db disabled).
 string  object_id
 
-# Volatile track ID from YOLO tracker.
-string  entity_id
+# Full source entity from TipsEmbedding.entity.
+hri_msgs/Entity entity
 
 # YOLO class label (e.g. "drill", "cup").
 string  category

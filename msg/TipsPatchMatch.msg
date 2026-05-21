@@ -1,10 +1,11 @@
 # Result of matching a TIPS v2 spatial patch against a text query.
 # Published by tips_text_matcher for each entity in a TipsEmbeddingArray frame.
+# Uses full hri_msgs/Entity from: https://github.com/Eurecat/hri_msgs
 
 std_msgs/Header header
 
-# Entity identity — maps back to TipsEmbedding.entity_id
-string entity_id
+# Full source entity from TipsEmbedding.entity.
+hri_msgs/Entity entity
 
 # The text query used for cosine-similarity matching (from YAML config)
 string query
