@@ -22,10 +22,15 @@ Upstream repository:
 ### Tool localisation
 | Message | Description |
 |---|---|
-| `ToolKeypoint` | 2D keypoint (tip / handle) for a detected tool |
+| `ToolKeypoint` | 2D pixel keypoints (tip / trigger optional / handle) for a detected tool |
 | `ToolKeypointArray` | Array of `ToolKeypoint` |
 | `ToolPose6D` | Full 6D pose estimate for a tool |
 | `ToolPose6DArray` | Array of `ToolPose6D` |
+
+`ToolKeypoint` fields:
+- `tip_2d`, `trigger_2d`, `handle_2d` are `geometry_msgs/Point` in pixel space.
+- `z` is unused and kept at `0.0`.
+- Missing optional keypoints are represented with `x = -1.0`, `y = -1.0`.
 
 ### TIPS v2 visual embeddings
 Produced by the `tips_visual_embedder` ROS 2 package.
